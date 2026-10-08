@@ -1,0 +1,245 @@
+/* Demo kit. Monospace appears only here and in code (spec 6). Layout uses
+   container queries so a demo fits both the home page and a text column. */
+
+.demo {
+  container: demo / inline-size;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.demo-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.demo-title {
+  font-weight: 600;
+}
+
+.demo-label {
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: var(--size-label);
+  color: var(--muted);
+}
+
+.demo-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.demo .btn.ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.demo .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.demo-body {
+  display: grid;
+  gap: 0;
+}
+
+.demo-body > * + * {
+  border-top: 1px solid var(--line);
+}
+
+/* Run log */
+.runlog {
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: var(--size-label);
+  line-height: 1.5;
+}
+
+.runlog ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.runlog .line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 12px;
+  padding: 4px 0;
+}
+
+.runlog .time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.runlog .status {
+  grid-column: 2;
+  color: var(--muted);
+}
+
+.runlog .line.ok .status {
+  color: var(--accent);
+}
+
+.runlog .line.flag .status,
+.runlog .line.wait .status {
+  color: var(--warn);
+}
+
+.runlog mark {
+  padding: 0 2px;
+  background: var(--mark);
+  color: var(--text);
+}
+
+.runlog-empty {
+  color: var(--muted);
+}
+
+@container demo (min-width: 560px) {
+  .runlog .line {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .runlog .status {
+    grid-column: auto;
+    text-align: right;
+  }
+}
+
+/* Data table */
+.table-wrap {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--size-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.data caption {
+  padding: 12px 20px 8px;
+  color: var(--muted);
+  font-size: var(--size-label);
+  text-align: left;
+}
+
+.data th,
+.data td {
+  padding: 8px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.data th:first-child,
+.data td:first-child {
+  padding-left: 20px;
+}
+
+.data th {
+  background: var(--soft);
+  color: var(--muted);
+  font-size: var(--size-label);
+  font-weight: 500;
+}
+
+.data td {
+  border-top: 1px solid var(--line);
+}
+
+.data .num {
+  text-align: right;
+}
+
+.data tr.flag td {
+  background: color-mix(in srgb, var(--warn) 10%, transparent);
+}
+
+.data tr.flag td:first-child {
+  box-shadow: inset 3px 0 0 var(--warn);
+}
+
+.data input {
+  width: 100%;
+  min-width: 10ch;
+  min-height: var(--target);
+  padding: 0 8px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.table-more {
+  padding: 8px 20px 0;
+  color: var(--muted);
+  font-size: var(--size-label);
+}
+
+@container demo (max-width: 559px) {
+  .data .low {
+    display: none;
+  }
+}
+
+/* KPI tiles */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.kpis > div {
+  padding: 16px 20px;
+}
+
+.kpis > div + div {
+  border-left: 1px solid var(--line);
+}
+
+.kpis dt {
+  order: 2;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: var(--size-label);
+  line-height: 1.4;
+}
+
+.kpis dd {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpis > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpis .warn dd {
+  color: var(--warn);
+}
+
+@container demo (max-width: 380px) {
+  .kpis > div {
+    padding: 12px;
+  }
+  .kpis dd {
+    font-size: 22px;
+  }
+}
