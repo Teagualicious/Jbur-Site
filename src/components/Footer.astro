@@ -1,0 +1,44 @@
+---
+import { site } from "../lib/data.ts";
+---
+<footer>
+  <div class="wrap">
+    <p class="name">{site.name}</p>
+    <ul aria-label="Contact">
+      <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li><a href={site.linkedin}>LinkedIn</a></li>
+      <li><a href={site.resumePdf}>Résumé (PDF)</a></li>
+      <li><a href={site.github}>GitHub</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    font-size: var(--size-small);
+    color: var(--muted);
+  }
+  .wrap {
+    padding-top: 24px;
+    padding-bottom: 40px;
+  }
+  .name {
+    color: var(--text);
+    font-weight: 600;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    margin-top: 8px;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+  }
+</style>
