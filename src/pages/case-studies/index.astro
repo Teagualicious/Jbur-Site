@@ -1,0 +1,23 @@
+---
+import Base from "../../layouts/Base.astro";
+import EntryList from "../../components/EntryList.astro";
+import { published } from "../../lib/content.ts";
+
+const studies = await published("case-studies");
+const items = studies.map((s) => ({
+  href: `/case-studies/${s.id}/`,
+  title: s.data.title,
+  date: s.data.date,
+  summary: s.data.summary,
+  meta: `${s.data.status} · ${s.data.context}`,
+}));
+---
+<Base title="Case studies" description="Full write-ups of systems I built: the problem, what I found, the decisions, what I built, and the result.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Case studies</h1>
+      <p class="lede">The whole story of each system: what was asked, what was actually wrong, the options and the call, what I built, and what changed.</p>
+    </header>
+    <EntryList items={items} empty="The first case study is on its way." />
+  </div>
+</Base>

@@ -1,0 +1,24 @@
+---
+import Base from "../../layouts/Base.astro";
+import EntryList from "../../components/EntryList.astro";
+import { published } from "../../lib/content.ts";
+import { excerpt } from "../../lib/format.ts";
+
+const logs = await published("field-logs");
+const items = logs.map((l) => ({
+  href: `/field-logs/${l.id}/`,
+  title: l.data.title,
+  date: l.data.date,
+  summary: l.body ? excerpt(l.body) : undefined,
+  meta: l.data.tags.join(", "),
+}));
+---
+<Base title="Field logs" description="Short, dated notes on single decisions and observations from the work.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Field logs</h1>
+      <p class="lede">Short, dated notes. Each one is a single decision or observation, newest first.</p>
+    </header>
+    <EntryList items={items} empty="No field logs yet." />
+  </div>
+</Base>

@@ -248,3 +248,69 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
+/* Code blocks: Shiki emits both themes as variables; pick one by OS setting. */
+pre.astro-code {
+  overflow-x: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: var(--size-small);
+  line-height: 1.5;
+}
+
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .astro-code span {
+    color: var(--shiki-dark);
+  }
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+}
+
+.prose li + li {
+  margin-top: 0.4em;
+}
+
+.prose blockquote {
+  margin: 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+}
+
+.prose table {
+  border-collapse: collapse;
+  font-size: var(--size-small);
+}
+
+.prose th,
+.prose td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.page-head {
+  padding-top: 32px;
+  margin-bottom: 32px;
+}
+
+.page-head .lede {
+  margin-top: 12px;
+  max-width: var(--prose);
+  color: var(--muted);
+}
+
+@media (min-width: 760px) {
+  .page-head {
+    padding-top: 56px;
+  }
+}

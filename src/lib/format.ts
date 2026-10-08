@@ -13,6 +13,13 @@ export function formatDate(date: Date): string {
   return dateFormat.format(date);
 }
 
+const monthFormat = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+
+/** "Aug 2026" */
+export function formatMonth(date: Date): string {
+  return monthFormat.format(date);
+}
+
 /** "2026-10-02", for <time datetime>. */
 export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);

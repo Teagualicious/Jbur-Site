@@ -1,0 +1,65 @@
+---
+// Index-page list: title link, optional summary, and a line of meta.
+import { formatDate, isoDate } from "../lib/format.ts";
+
+interface Item {
+  href: string;
+  title: string;
+  date: Date;
+  summary?: string;
+  meta?: string;
+}
+
+interface Props {
+  items: Item[];
+  empty: string;
+}
+
+const { items, empty } = Astro.props;
+---
+{items.length === 0 ? (
+  <p class="empty">{empty}</p>
+) : (
+  <ol class="list">
+    {items.map((item) => (
+      <li>
+        <a class="title" href={item.href}>{item.title}</a>
+        {item.summary && <p class="summary">{item.summary}</p>}
+        <p class="label">
+          <time datetime={isoDate(item.date)}>{formatDate(item.date)}</time>
+          {item.meta && <> · {item.meta}</>}
+        </p>
+      </li>
+    ))}
+  </ol>
+)}
+
+<style>
+  .list {
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  li {
+    display: grid;
+    gap: 4px;
+    padding: 16px;
+  }
+  li + li {
+    border-top: 1px solid var(--line);
+  }
+  .title {
+    font-weight: 600;
+    font-size: var(--size-body);
+  }
+  .summary {
+    max-width: 40em;
+    color: var(--muted);
+    font-size: var(--size-small);
+  }
+  .empty {
+    color: var(--muted);
+  }
+</style>

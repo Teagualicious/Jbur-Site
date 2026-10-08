@@ -1,0 +1,42 @@
+---
+import { getEntry, render } from "astro:content";
+import Entry from "../../layouts/Entry.astro";
+import { published } from "../../lib/content.ts";
+import { excerpt, formatDate, isoDate } from "../../lib/format.ts";
+
+export async function getStaticPaths() {
+  const logs = await published("field-logs");
+  return logs.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const related = entry.data.related ? await getEntry(entry.data.related) : undefined;
+---
+<Entry title={entry.data.title} description={excerpt(entry.body ?? "", 160) || entry.data.title} kicker="Field log">
+  <p class="label meta" slot="meta">
+    <time datetime={isoDate(entry.data.date)}>{formatDate(entry.data.date)}</time>
+    {entry.data.tags.length > 0 && <> · {entry.data.tags.join(", ")}</>}
+  </p>
+
+  <Content />
+
+  {related && (
+    <p class="related" slot="after">
+      From the case study <a href={`/case-studies/${related.id}/`}>{related.data.title}</a>.
+    </p>
+  )}
+</Entry>
+
+<style>
+  .meta {
+    margin-top: 12px;
+  }
+  .related {
+    margin-top: 48px;
+    padding-top: 16px;
+    max-width: var(--prose);
+    border-top: 1px solid var(--line);
+    font-size: var(--size-small);
+  }
+</style>

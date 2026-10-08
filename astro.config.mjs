@@ -9,4 +9,8 @@ export default defineConfig({
   site: "https://jbur-site.workers.dev",
   output: "static",
   integrations: [mdx(), sitemap(), preact()],
+  markdown: {
+    // Code follows the OS theme like the rest of the site (styled in global.css).
+    shikiConfig: { themes: { light: "github-light", dark: "github-dark" }, defaultColor: false },
+  },
 });

@@ -1,0 +1,16 @@
+---
+// Layout for standalone Markdown/MDX pages (How I work, Résumé).
+import Base from "./Base.astro";
+
+interface Props {
+  frontmatter: { title: string; description: string };
+}
+
+const { title, description } = Astro.props.frontmatter;
+---
+<Base title={title} description={description}>
+  <div class="wrap">
+    <header class="page-head"><h1>{title}</h1></header>
+    <div class="prose"><slot /></div>
+  </div>
+</Base>
