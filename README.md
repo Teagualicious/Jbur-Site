@@ -14,4 +14,8 @@ Requires Node 22.18 or newer (see `.node-version`).
 | `npm ci` | Install dependencies |
 | `npm run dev` | Local preview with live reload at http://localhost:4321 |
 | `npm test` | Run the unit tests |
-| `npm run build` | Tests, type check, then build to `dist/` |
+| `npm run build` | Blocked-terms check, tests, type check, then build to `dist/` |
+
+## Blocked terms
+
+`npm run build` fails unless `BLOCKED_TERMS` is set. Copy `.env.example` to `.env` and list, comma-separated, every client, system, team, coworker and employer name that must never appear on the site. `.env` is git-ignored; never commit the list. On Cloudflare it is a build secret.
