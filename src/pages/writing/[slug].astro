@@ -1,0 +1,29 @@
+---
+import { render } from "astro:content";
+import Entry from "../../layouts/Entry.astro";
+import { published } from "../../lib/content.ts";
+import { formatDate, isoDate } from "../../lib/format.ts";
+
+export async function getStaticPaths() {
+  const essays = await published("writing");
+  return essays.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Entry title={d.title} description={d.summary} kicker="Writing">
+  <p class="lede" slot="lede">{d.summary}</p>
+  <p class="label meta" slot="meta">
+    <time datetime={isoDate(d.date)}>{formatDate(d.date)}</time>
+    {d.updated && <> · Updated <time datetime={isoDate(d.updated)}>{formatDate(d.updated)}</time></>}
+  </p>
+  <Content />
+</Entry>
+
+<style>
+  .meta {
+    margin-top: 12px;
+  }
+</style>

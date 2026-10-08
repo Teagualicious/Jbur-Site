@@ -1,10 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { excerpt, formatDate, isoDate } from "./format.ts";
+import { excerpt, formatDate, formatMonth, isoDate } from "./format.ts";
 
 test("formatDate uses the spec's style and doesn't shift UTC dates", () => {
   assert.equal(formatDate(new Date("2026-10-02")), "Oct 2, 2026");
   assert.equal(formatDate(new Date("2026-01-01")), "Jan 1, 2026");
+});
+
+test("formatMonth", () => {
+  assert.equal(formatMonth(new Date("2026-08-01")), "Aug 2026");
 });
 
 test("isoDate", () => {

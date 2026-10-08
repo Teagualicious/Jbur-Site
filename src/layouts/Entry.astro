@@ -1,0 +1,38 @@
+---
+// One case study, field log or essay: heading block, then the body as prose.
+import Base from "./Base.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  kicker?: string;
+}
+
+const { title, description, kicker } = Astro.props;
+---
+<Base title={title} description={description}>
+  <article class="wrap">
+    <header class="page-head">
+      {kicker && <p class="label kicker">{kicker}</p>}
+      <h1>{title}</h1>
+      <slot name="lede" />
+      <slot name="meta" />
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+    <slot name="after" />
+  </article>
+</Base>
+
+<style>
+  .kicker {
+    margin-bottom: 8px;
+  }
+  .prose {
+    max-width: none;
+  }
+  .prose > :global(*:not(figure, .demo, pre, table)) {
+    max-width: var(--prose);
+  }
+</style>

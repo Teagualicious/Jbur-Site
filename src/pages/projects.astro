@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import { projects } from "../lib/data.ts";
+---
+<Base title="Projects" description="Side projects, with their status, the tools used, and their code.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Projects</h1>
+      <p class="lede">Side projects. The ones that deserve a full write-up become case studies marked “Personal project”.</p>
+    </header>
+    {projects.length === 0 ? (
+      <p class="empty">Projects are on their way.</p>
+    ) : (
+      <ul class="grid">
+        {projects.map((p) => (
+          <li>
+            <h2>{p.link ? <a href={p.link}>{p.name}</a> : p.name}</h2>
+            <p class="blurb">{p.blurb}</p>
+            <p class="label">{p.status} · {p.stack.join(", ")}</p>
+            <p class="small"><a href={p.repo}>Code on GitHub</a></p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  h2 {
+    font-size: var(--size-h3);
+  }
+  .blurb {
+    color: var(--muted);
+    font-size: var(--size-small);
+  }
+  .small a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+  }
+  .empty {
+    color: var(--muted);
+  }
+</style>

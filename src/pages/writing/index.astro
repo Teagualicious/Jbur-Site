@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import EntryList from "../../components/EntryList.astro";
+import { published } from "../../lib/content.ts";
+
+const essays = await published("writing");
+const items = essays.map((e) => ({
+  href: `/writing/${e.id}/`,
+  title: e.data.title,
+  date: e.data.date,
+  summary: e.data.summary,
+}));
+---
+<Base title="Writing" description="Longer research essays.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Writing</h1>
+      <p class="lede">Longer research essays.</p>
+    </header>
+    <EntryList items={items} empty="No essays yet." />
+  </div>
+</Base>

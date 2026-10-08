@@ -1,0 +1,91 @@
+---
+import { render } from "astro:content";
+import Entry from "../../layouts/Entry.astro";
+import LogList from "../../components/LogList.astro";
+import { published } from "../../lib/content.ts";
+import { formatMonth } from "../../lib/format.ts";
+
+export async function getStaticPaths() {
+  const studies = await published("case-studies");
+  return studies.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const related = (await published("field-logs")).filter((log) => log.data.related?.id === entry.id);
+
+const basisLabel = { measured: "Measured", estimated: "Estimated", illustrative: "Illustrative" } as const;
+---
+<Entry title={d.title} description={d.summary} kicker="Case study">
+  <p class="lede" slot="lede">{d.summary}</p>
+  <Fragment slot="meta">
+    <dl class="meta">
+      <div><dt>Status</dt><dd class:list={["status", { live: d.status === "Live" }]}>{d.status}</dd></div>
+      <div><dt>Launched</dt><dd>{formatMonth(d.launched)}</dd></div>
+      <div><dt>Period</dt><dd>{d.period}</dd></div>
+      <div><dt>Role</dt><dd>{d.role}</dd></div>
+      <div><dt>Context</dt><dd>{d.context}</dd></div>
+      <div><dt>Tools</dt><dd>{d.tools.join(", ")}</dd></div>
+    </dl>
+    {d.outcome && (
+      <p class="outcome">
+        <span class="basis">{basisLabel[d.outcome.basis]}</span>
+        {d.outcome.text}
+      </p>
+    )}
+  </Fragment>
+
+  <Content />
+
+  {related.length > 0 && (
+    <section class="related" slot="after" aria-labelledby="related">
+      <h2 id="related">Field logs from this project</h2>
+      <LogList logs={related} />
+    </section>
+  )}
+</Entry>
+
+<style>
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px 24px;
+    margin-top: 24px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: var(--size-small);
+  }
+  dt {
+    color: var(--muted);
+    font-size: var(--size-label);
+  }
+  .status {
+    font-weight: 600;
+  }
+  .status.live {
+    color: var(--accent);
+  }
+  .outcome {
+    margin-top: 16px;
+    max-width: var(--prose);
+    font-weight: 500;
+  }
+  .basis {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 0 8px;
+    border: 1px solid var(--control);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: var(--size-label);
+    font-weight: 500;
+  }
+  .related {
+    margin-top: var(--section-gap);
+  }
+  .related h2 {
+    margin-bottom: 16px;
+  }
+</style>
