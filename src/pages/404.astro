@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Page not found" description="This page doesn't exist.">
+  <div class="wrap nf">
+    <h1>Page not found</h1>
+    <p>That page doesn't exist, or it moved.</p>
+    <p><a href="/">Go to the home page</a> or <a href="/case-studies/">read the case studies</a>.</p>
+  </div>
+</Base>
+
+<style>
+  .nf {
+    padding-top: 56px;
+  }
+  .nf p {
+    margin-top: 16px;
+    max-width: var(--prose);
+  }
+</style>

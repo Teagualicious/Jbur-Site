@@ -1,0 +1,112 @@
+---
+import { site } from "../lib/data.ts";
+
+const links = [
+  { href: "/case-studies/", label: "Case studies" },
+  { href: "/field-logs/", label: "Field logs" },
+  { href: "/writing/", label: "Writing" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/how-i-work/", label: "How I work" },
+  { href: "/resume/", label: "Résumé" },
+];
+
+const path = Astro.url.pathname;
+const current = (href: string) => (path.startsWith(href) ? "page" : undefined);
+---
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="/">{site.name}</a>
+    <nav aria-label="Main">
+      <ul class="nav-wide">
+        {links.map((l) => <li><a href={l.href} aria-current={current(l.href)}>{l.label}</a></li>)}
+      </ul>
+      <details class="nav-narrow">
+        <summary class="btn">Menu</summary>
+        <ul>
+          {links.map((l) => <li><a href={l.href} aria-current={current(l.href)}>{l.label}</a></li>)}
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .hdr-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  nav a {
+    color: var(--muted);
+    font-size: var(--size-small);
+    text-decoration: none;
+  }
+  nav a:hover,
+  nav a[aria-current="page"] {
+    color: var(--text);
+  }
+  nav a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+  .nav-wide {
+    display: none;
+  }
+  .nav-narrow {
+    position: relative;
+  }
+  .nav-narrow summary {
+    list-style: none;
+  }
+  .nav-narrow summary::-webkit-details-marker {
+    display: none;
+  }
+  .nav-narrow ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 5;
+    min-width: 200px;
+    padding: 8px 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .nav-narrow a {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 16px;
+    font-size: var(--size-body);
+  }
+  @media (min-width: 760px) {
+    .nav-wide {
+      display: flex;
+      gap: 24px;
+    }
+    .nav-wide a {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--target);
+    }
+    .nav-narrow {
+      display: none;
+    }
+  }
+</style>
