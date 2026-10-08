@@ -1,0 +1,64 @@
+---
+# Copy to src/content/case-studies/<slug>.mdx. The slug becomes the URL:
+# /case-studies/<slug>/. Leave draft: true until the checklist at the
+# bottom is done; drafts show in `npm run dev` and never go live.
+title: Short name of the system
+summary: One or two sentences on what it does and for whom. 280 characters at most; also used as the page description.
+date: 2026-01-01          # when this case study is published
+launched: 2026-01-01      # when the real product shipped
+period: Jan–Feb 2026      # when you worked on it
+context: Fortune 500 media company   # or "Personal project"
+role: What you owned, in one line
+status: Live              # Live | Pilot | In progress | Retired
+tools: [Power Automate, Python]
+replaced: The manual process this took over, in one line (puts it in the home page's systems table)
+steps: { total: 9, people: 2 }       # steps in the workflow today, and how many people still do
+# outcome: { text: "About 3 hours a week freed up for the team", basis: estimated }   # measured | estimated | illustrative
+draft: true
+---
+
+{/* To embed the demo, uncomment the next line and place <Demo client:visible /> where it belongs (usually after "What I built"). */}
+{/* import Demo from "../../demos/<demo-id>/Demo.tsx"; */}
+
+## The ask
+
+What leadership or the team asked for, in their words.
+
+## What was actually wrong
+
+The real bottleneck, which is often different from the ask.
+
+## How I found out
+
+Who you sat with, what you mapped, what the data showed.
+
+## Options and the call
+
+The two or three options you weighed and why you picked the one you did.
+
+## What I built
+
+The system, step by step. Show the important code inline.
+
+## What stayed familiar, what went away, what people had to learn
+
+What the team still does the same way, what manual work disappeared, and anything new they had to pick up.
+
+## Result
+
+What changed. Label every figure as measured, estimated, or illustrative.
+
+## What I'd change
+
+With hindsight, what you'd do differently.
+
+{/*
+Pre-publish checklist (spec 8.4). Tick every line before setting draft: false.
+
+- [ ] No client, system, team, or coworker names. (The build's blocked-terms check also catches these.)
+- [ ] Every figure is labeled measured, estimated, or illustrative.
+- [ ] The demo runs only on made-up data and carries no employer styling.
+- [ ] Every image has been checked by eye. The build can't read images.
+- [ ] Inherited processes are described diplomatically.
+- [ ] The employer-policy check is done (spec 8.5). Needed once, before the first work case study.
+*/}
