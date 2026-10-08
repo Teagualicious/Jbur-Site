@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { excerpt, formatDate, isoDate } from "../lib/format.ts";
+
+interface Props {
+  logs: CollectionEntry<"field-logs">[];
+}
+
+const { logs } = Astro.props;
+---
+<ol class="logs">
+  {logs.map((log) => (
+    <li>
+      <time datetime={isoDate(log.data.date)} class="label">{formatDate(log.data.date)}</time>
+      <a class="title" href={`/field-logs/${log.id}/`}>{log.data.title}</a>
+      {log.body && <p class="excerpt">{excerpt(log.body)}</p>}
+      {log.data.tags.length > 0 && <p class="label">{log.data.tags.join(", ")}</p>}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .logs {
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  li {
+    display: grid;
+    gap: 2px;
+    padding: 16px;
+  }
+  li + li {
+    border-top: 1px solid var(--line);
+  }
+  .title {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .title:hover {
+    text-decoration: underline;
+  }
+  .excerpt {
+    max-width: 34em;
+    color: var(--muted);
+    font-size: var(--size-small);
+  }
+</style>

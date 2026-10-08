@@ -1,0 +1,69 @@
+---
+import { site } from "../lib/data.ts";
+
+const handle = new URL(site.github).pathname.replace(/^\/|\/$/g, "");
+---
+<aside class="contact" aria-labelledby="contact-title">
+  <h2 id="contact-title">Get in touch</h2>
+  <dl>
+    <div class="row"><dt>Email</dt><dd class="copy">{site.email}</dd></div>
+    <div class="row"><dt>LinkedIn</dt><dd><a href={site.linkedin}>View profile</a></dd></div>
+    <div class="row"><dt>Résumé</dt><dd><a href={site.resumePdf}>Download PDF</a></dd></div>
+    <div class="row"><dt>GitHub</dt><dd><a href={site.github}>{handle}</a></dd></div>
+    <div class="row"><dt>Status</dt><dd class="status">{site.availability}<span>{site.location}</span></dd></div>
+  </dl>
+  <a class="btn primary" href={`mailto:${site.email}`}>Email me</a>
+</aside>
+
+<style>
+  .contact {
+    align-self: start;
+    padding: 8px 20px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  h2 {
+    padding: 12px 0 6px;
+    font-size: var(--size-body);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    min-height: var(--target);
+    border-top: 1px solid var(--line);
+    font-size: var(--size-small);
+  }
+  dt {
+    color: var(--muted);
+    font-size: var(--size-label);
+  }
+  dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  dd a {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+  }
+  .copy {
+    user-select: all;
+  }
+  .status {
+    padding: 10px 0;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .status span {
+    display: block;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .btn {
+    width: 100%;
+    margin-top: 16px;
+  }
+</style>

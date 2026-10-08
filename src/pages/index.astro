@@ -1,9 +1,165 @@
 ---
-// Placeholder. The real home page arrives in build plan step 5.
 import Base from "../layouts/Base.astro";
+import ContactCard from "../components/ContactCard.astro";
+import FeaturedDemo from "../components/FeaturedDemo.astro";
+import LogList from "../components/LogList.astro";
+import SystemsTable from "../components/SystemsTable.astro";
+import { published } from "../lib/content.ts";
+import { site } from "../lib/data.ts";
+import { formatDate, isoDate } from "../lib/format.ts";
+import { systemRows } from "../lib/systems.ts";
+
+const rows = systemRows(await published("case-studies"));
+const logs = (await published("field-logs")).slice(0, 3);
+const essays = (await published("writing")).slice(0, 2);
+
+const claim = "I find the bottleneck in a team’s workflow and automate it without changing how they work.";
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: Astro.site?.href,
+  sameAs: [site.linkedin, site.github],
+};
 ---
-<Base description="Placeholder home page.">
-  <div class="wrap" style="padding-top: 56px">
-    <h1>Site under construction.</h1>
+<Base description={claim}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(person)} />
+
+  <div class="wrap">
+    <section class="intro">
+      <h1>{claim}</h1>
+      <p class="meta">Performance analytics at a Fortune 500 media company · Economics at UNC Charlotte</p>
+      <ContactCard />
+      {/* Draft bio from the design mockup. Replaced in build plan step 11. */}
+      <p class="bio">
+        Most of my projects start with a goal from leadership and a process nobody fully owns. I sit with the people
+        doing the work, map what actually happens, and build automations in Power Automate, Python, and Claude. Usually
+        the team keeps the spreadsheet or inbox they already use, and the manual work behind it is what goes away.
+      </p>
+      <p class="now"><span class="label">Now</span>{site.now}</p>
+    </section>
+
+    {rows.length > 0 && (
+      <section class="sec" aria-labelledby="systems">
+        <div class="sec-head"><h2 id="systems">Systems I’ve built</h2><a class="small" href="/case-studies/">All case studies</a></div>
+        <SystemsTable rows={rows} />
+      </section>
+    )}
+
+    <section class="sec" aria-labelledby="demo">
+      <div class="sec-head"><h2 id="demo">Try a demo</h2></div>
+      <FeaturedDemo />
+    </section>
+
+    {logs.length > 0 && (
+      <section class="sec" aria-labelledby="logs">
+        <div class="sec-head"><h2 id="logs">Field logs</h2><a class="small" href="/field-logs/">All field logs</a></div>
+        <LogList logs={logs} />
+      </section>
+    )}
+
+    {essays.length > 0 && (
+      <section class="sec" aria-labelledby="writing">
+        <div class="sec-head"><h2 id="writing">Writing</h2><a class="small" href="/writing/">All writing</a></div>
+        <ul class="essays">
+          {essays.map((e) => (
+            <li>
+              <a href={`/writing/${e.id}/`}>{e.data.title}</a>
+              <p class="small">{e.data.summary}</p>
+              <time class="label" datetime={isoDate(e.data.date)}>{formatDate(e.data.date)}</time>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </div>
 </Base>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-top: 32px;
+  }
+  h1 {
+    max-width: 18em;
+  }
+  .meta {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: var(--size-small);
+  }
+  .intro :global(.contact) {
+    margin-top: 24px;
+  }
+  .bio {
+    margin-top: 24px;
+    max-width: var(--prose);
+  }
+  .now {
+    margin-top: 16px;
+    font-size: var(--size-small);
+  }
+  .now .label {
+    display: block;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .sec {
+    margin-top: var(--section-gap);
+  }
+  .sec-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 24px;
+    margin-bottom: 16px;
+  }
+  .sec-head a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+  }
+  .essays {
+    display: grid;
+    gap: 24px;
+    padding: 0;
+    list-style: none;
+  }
+  .essays a {
+    font-weight: 600;
+  }
+  .essays p {
+    margin-top: 4px;
+    max-width: var(--prose);
+    color: var(--muted);
+  }
+  @media (min-width: 760px) {
+    .intro {
+      grid-template-columns: minmax(0, 1fr) 384px;
+      grid-template-areas: "h1 contact" "meta contact" "bio contact" "now contact";
+      grid-template-rows: auto auto auto 1fr;
+      column-gap: 72px;
+      padding-top: 56px;
+    }
+    h1 {
+      grid-area: h1;
+    }
+    .meta {
+      grid-area: meta;
+    }
+    .intro :global(.contact) {
+      grid-area: contact;
+      margin-top: 0;
+    }
+    .bio {
+      grid-area: bio;
+    }
+    .now {
+      grid-area: now;
+    }
+  }
+</style>

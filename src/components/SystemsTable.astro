@@ -1,0 +1,144 @@
+---
+import DotStrip from "./DotStrip.astro";
+import { stepCaption, type SystemRow } from "../lib/systems.ts";
+
+interface Props {
+  rows: SystemRow[];
+}
+
+const { rows } = Astro.props;
+---
+<div class="card">
+  <table>
+    <thead>
+      <tr><th scope="col">System</th><th scope="col">What it replaced</th><th scope="col">Steps today</th><th scope="col">Status</th><th scope="col">Since</th></tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <td>
+            <a class="name" href={`/case-studies/${row.id}/`}>{row.title}</a>
+            <span class="desc">{row.summary}</span>
+          </td>
+          <td class="replaced"><span class="inline-label">Replaced: </span>{row.replaced}</td>
+          <td>
+            {row.steps ? (
+              <>
+                <DotStrip steps={row.steps} />
+                <span class="count">{stepCaption(row.steps)}</span>
+              </>
+            ) : (
+              <span class="count">—</span>
+            )}
+          </td>
+          <td><span class:list={["status", { live: row.status === "Live" }]}>{row.status}</span></td>
+          <td class="since num">{row.since}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="label caption">Hollow dots are steps people still do. Filled dots are automated.</p>
+
+<style>
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-small);
+  }
+  /* Phones: each row stacks into a block. */
+  thead,
+  .since {
+    display: none;
+  }
+  tbody,
+  tr,
+  td {
+    display: block;
+  }
+  tr {
+    padding: 16px;
+  }
+  tr + tr {
+    border-top: 1px solid var(--line);
+  }
+  td + td {
+    margin-top: 8px;
+  }
+  .inline-label {
+    color: var(--muted);
+  }
+  .name {
+    font-size: var(--size-body);
+    font-weight: 600;
+  }
+  .desc {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+  }
+  .count {
+    font-size: var(--size-label);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .status {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .status.live {
+    color: var(--accent);
+  }
+  .caption {
+    margin-top: 8px;
+  }
+  @media (min-width: 760px) {
+    table {
+      display: table;
+    }
+    thead {
+      display: table-header-group;
+    }
+    tbody {
+      display: table-row-group;
+    }
+    tr {
+      display: table-row;
+      padding: 0;
+    }
+    td,
+    .since {
+      display: table-cell;
+      margin: 0;
+      padding: 16px;
+      vertical-align: top;
+      border-top: 1px solid var(--line);
+    }
+    th {
+      padding: 10px 16px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: var(--size-label);
+      font-weight: 500;
+      text-align: left;
+      white-space: nowrap;
+    }
+    th:first-child {
+      border-top-left-radius: var(--radius);
+    }
+    th:last-child {
+      border-top-right-radius: var(--radius);
+    }
+    td:first-child {
+      width: 34%;
+    }
+    .inline-label {
+      display: none;
+    }
+  }
+</style>

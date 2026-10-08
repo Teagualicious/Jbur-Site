@@ -1,0 +1,35 @@
+---
+// Hollow dots are steps people still do; filled dots are automated.
+import { stepLabel, type Steps } from "../lib/systems.ts";
+
+interface Props {
+  steps: Steps;
+}
+
+const { steps } = Astro.props;
+const gap = 14;
+const width = (steps.total - 1) * gap + 12;
+---
+<svg class="strip" width={width} height="12" viewBox={`0 0 ${width} 12`} role="img" aria-label={stepLabel(steps)}>
+  {Array.from({ length: steps.total }, (_, i) =>
+    i < steps.people ? (
+      <circle class="people" cx={6 + i * gap} cy="6" r="4.25" />
+    ) : (
+      <circle class="auto" cx={6 + i * gap} cy="6" r="5" />
+    ),
+  )}
+</svg>
+
+<style>
+  .strip {
+    margin: 2px 0 4px;
+  }
+  .people {
+    fill: none;
+    stroke: var(--people);
+    stroke-width: 1.5;
+  }
+  .auto {
+    fill: var(--accent);
+  }
+</style>
